@@ -1,0 +1,88 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Title of the webpage -->
+  <title>Lava Lamp Entropy</title>
+  <style>
+    /* --- styling --- */
+    body {
+      margin: 0; /* removes default margins */
+      height: 100vh; /* Make body take up the full height of the screen */
+      display: flex; 
+      flex-direction: column;
+      justify-content: center; 
+      align-items: center; 
+      font-family: monospace;
+      background: radial-gradient(circle at 30% 30%, #ff4500, #8b0000 70%); 
+      color: #ffddaa; /* off white text */
+      overflow: hidden; /* Hide scrollbars for a clean look */
+    }
+
+    /* --- TITLE / H1 STYLING --- */
+    h1 {
+      font-size: 2.5em; /* Large title */
+      color: #fff8dc; /* Light yellow color */
+      /* Glowing lava effect on the text */
+      text-shadow: 0 0 10px #ff4500, 0 0 20px #ff6347;
+      margin-bottom: 20px; /* Space below the title */
+    }
+
+    /* --- ENTROPY DISPLAY --- */
+    #entropy {
+      font-size: 1.5em; /* Slightly smaller font for the entropy value */
+      font-weight: bold; /* Make the entropy text bold */
+      /* Gradient background for the entropy text */
+      background: linear-gradient(90deg, #ff4500, #ff8c00, #ff6347, #ff8c00, #ff4500);
+      background-size: 200% 100%; /* Stretch the gradient to create a smooth effect */
+      
+      /* compatibility with most browsers */
+      background-clip: text; 
+      /* WebKit fallback for Chrome/Safari */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: glow 3s linear infinite; /* trying this out */
+      text-align: center; /* Center-align the entropy value */
+    }
+
+    /* --- GLOW ANIMATION --- */
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #ff4500, 0 0 20px #ff6347; /* Initial soft glow */
+      }
+      to {
+        text-shadow: 0 0 20px #ff8c00, 0 0 40px #ff4500; /* Intense glowing effect */
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- title page -->
+  <h1>Lava Lamp Entropy</h1>
+  <!-- where entropy value will be displayed, starts as "Loading..." -->
+  <p id="entropy">Loading...</p>
+
+  <script>
+    // script for fecting the entropy to the server
+    async function fetchEntropy() {
+      try {
+        // Call the Flask endpoint '/entropy' to get the current entropy hash
+        let res = await fetch("/entropy");
+        let data = await res.json(); // Parse the JSON response
+        // Display the entropy hash in the HTML element with id "entropy"
+        document.getElementById("entropy").innerText = data.entropy;
+      } catch(e) {
+        // If the server can't be reached, show an error message
+        document.getElementById("entropy").innerText = "Error fetching entropy";
+      }
+    }
+
+    // Fetch entropy every 2 seconds to keep it updated in real-time
+    setInterval(fetchEntropy, 2000);
+    // Initial fetch when the page loads
+    fetchEntropy();
+  </script>
+</body>
+</html>
