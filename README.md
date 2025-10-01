@@ -1,7 +1,7 @@
 # LavaLampEntropy
 Inspired by CloudFlares LavaRand (lava lamp entropy wall)
 
-This is a little lava lamp simulator game I made in Python with Pygame and Flask. 
+This is a little lava lamp simulator game I made in Python with Pygame and Flask. Java incorperated with my previous knowledge in python and html. 
 
 # Disclaimer: May have some bugs but I will soon fix them.
 
@@ -12,7 +12,7 @@ This is a little lava lamp simulator game I made in Python with Pygame and Flask
     * Python + Pygame for the blobs and animation
     * Flask for the web server
     * Java client that can fetch the hash
-    * HTML/CSS for the web page
+    * HTML/CSS for the web page (in progress)
 
  
 Enjoy! :)
