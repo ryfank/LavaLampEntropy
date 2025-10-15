@@ -12,5 +12,10 @@ This is a little lava lamp simulator game I made in Python with Pygame and Flask
     * Java client that can fetch the hash
     * HTML/CSS for the web page (in progress)
 
+
+# Preview
+
+![2025-09-30 13 35 31](https://github.com/user-attachments/assets/de879eaf-585a-439a-a813-35ca27b6224b)
+
  
 Enjoy! :)
