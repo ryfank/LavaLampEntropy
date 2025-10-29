@@ -3,7 +3,7 @@
 # using the visual state of the blobs 
 # mini version of Cloudflare's lavarand
 
-import pygame
+import pygame #librarys i chose
 import random
 import hashlib
 import threading
@@ -18,7 +18,7 @@ app = Flask(__name__, static_folder='../web')
 WIDTH, HEIGHT = 500, 400
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Lava Lamp")  # Window title
+pygame.display.set_caption("Lava Lamp") 
 clock = pygame.time.Clock()  
 
 # blob class
@@ -26,26 +26,27 @@ clock = pygame.time.Clock()
 class Blob:
     # Some colors that look like lava
     LAVA_COLORS = [
-        (255, 69, 0),    # red-orange
-        (255, 140, 0),   # dark orange
-        (255, 165, 0),   # orange
-        (255, 180, 50),  # softer yellow-orange
-        (255, 99, 71),   # tomato red
+        (255, 69, 0),    #red-ish orange
+        (255, 140, 0),   #dark orange
+        (255, 165, 0),   #bright orange
+        (255, 180, 50),  #softer yellow-orange
+        (255, 99, 71),   #tomato red
     ]
 
     def __init__(self):
-        # Random starting position
+        # Random starting position, making most random as possbile to simulate lava lamp
+        #math :/
         self.x = random.randint(30, WIDTH - 30)
         self.y = random.randint(30, HEIGHT - 30)
-        # Random speed
+        #Random speed
         self.vx = random.uniform(-1, 1)
         self.vy = random.uniform(-1, 1)
-        # Random size so blobs are different
+        #Random size so blobs are different
         self.size = random.randint(15, 35)
-        # Pick a random lava color and add some variation
+        #Pick a random lava color and add some variation to sizes
         base = random.choice(self.LAVA_COLORS)
         self.color = [min(255, max(0, c + random.randint(-20, 20))) for c in base]
-        # Noise offset helps make movement feel more wobbly and organic
+        #make movement feel more wobbly and organic
         self.noise_offset = random.uniform(0, 1000)
 
     # Move the blob each frame
@@ -59,8 +60,7 @@ class Blob:
         if self.x - self.size < 0: #left edge
             self.x = self.size
             self.vx *= -1
-    #object’s left edge has moved past x=0 
-    # (the left border of the screen)
+           #bounces off left side
         if self.x + self.size > WIDTH: # right edge
             self.x = WIDTH - self.size
             self.vx *= -1
@@ -78,12 +78,12 @@ class Blob:
 
     # Draw the blob on the screen
     def draw(self, surface):
-        # making a glowing blob
+        # making a glowing blob, more math :/
         gradient_surface = pygame.Surface((self.size*4, self.size*4), pygame.SRCALPHA)
         center = self.size*2
         for r in range(self.size*2, 0, -1):
             alpha = max(0, 255 * (r / (self.size*2))**2)  # soft edges
-            color = [min(255, c + 50) for c in self.color]  # brighten the color for glow
+            color = [min(255, c + 50) for c in self.color]  #brighten the color for glow
             pygame.draw.circle(gradient_surface, (*color, int(alpha)), (center, center), r)
         surface.blit(gradient_surface, (int(self.x - center), int(self.y - center)), special_flags=pygame.BLEND_ADD)
 
@@ -99,19 +99,19 @@ def get_entropy(surface):
 # Flask routes
 @app.route("/")
 def index():
-    # serve the HTML page
+    # serve the HTML page, wip so may not work
     return send_from_directory(app.static_folder, "index.html")
 
 @app.route("/entropy")
 def entropy_api():
-    # Return the hash of the current screen as JSON
+    # Return the hash of the current screen , this WILL work as it does show you the hash through here
     return jsonify({"entropy": get_entropy(screen)})
 
 # Run Flask in the background
 def run_flask():
     app.run(host="0.0.0.0", port=5000, debug=False, use_reloader=False)
 
-# Main Pygame loop
+#Pygame loop
 def run():
     # Start flask server in a separate thread
     threading.Thread(target=run_flask, daemon=True).start()
@@ -128,7 +128,7 @@ def run():
             blob.draw(screen)
 
         pygame.display.flip()  # Show it on screen
-        clock.tick(30)  # 30 frames per second
+        clock.tick(30)  # 30 frames per second, u can change tho 
 
     pygame.quit()
 
